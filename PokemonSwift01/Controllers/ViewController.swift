@@ -29,16 +29,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var pokemonListTableView: UITableView!
     let endPoint = "https://pokeapi.co/api/v2/pokemon/"
     let pokemonDetailSegue = "pokemonDetailSegue"
-        
+    
     var containerForLoading = UIView()
-
+    
     
     var PokemonResults: [PokemonResult] = [] //array filled with some data from JASON or other source
     var rows: [TableViewCellProtocol] = []
     var pokemonsCollection: [Pokemon] = [] //full data for each pokemon
     
     
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,10 +48,8 @@ class ViewController: UIViewController {
         pokemonListTableView.dataSource = self
         
         self.showLoadingView(uponView: self.view)
-
+        
         fetchPokemons { (pokemons, message) in
-            
-            
             
             guard let pokemons = pokemons else {
                 return
@@ -62,15 +60,15 @@ class ViewController: UIViewController {
                 self.rows.append(PokemonCellRowObject(delegate: self, identity: SectionsForTable.pokemonCell.rawValue, pokemonName: singlePokemon.name, url: singlePokemon.url))
                 
                 self.GetPokemonAbility(singlePokemonUrl: singlePokemon.url)
-
-
+                
+                
             }
             
-
+            
             
             DispatchQueue.main.async {
                 self.removeLoading(uponView: self.view)
-
+                
                 self.pokemonListTableView.reloadData()
             }
             
@@ -105,7 +103,7 @@ class ViewController: UIViewController {
             self.pokemonsCollection.append(singlePokemon)
         }
         
-
+        
     }
     
     
@@ -281,10 +279,10 @@ extension ViewController {
         
         
         NSLayoutConstraint.activate([
-        
+            
             activivityIndicator.centerYAnchor.constraint(equalTo: uponView.centerYAnchor),
             activivityIndicator.centerXAnchor.constraint(equalTo: uponView.centerXAnchor)
-
+            
         ])
         
         activivityIndicator.startAnimating()
