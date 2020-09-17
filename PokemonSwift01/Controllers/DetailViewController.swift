@@ -21,6 +21,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var detailVCTable: UITableView!
     
     var foundPokemon: Pokemon?
+    var localPokemon: PokemonLocal?
+    var weAreOnline = true
     
     var rows: [TableViewCellProtocol] = []
 
@@ -41,22 +43,43 @@ class DetailViewController: UIViewController {
     //                self.rows.append(CustomHeaderForCellModelRowObject(delegate: self, identity: section.rawValue, headerTitle: "sono l'header"))
                 break
             case .name :
-                rows.append((DetailCellRowObject(delegate: self, identity: SectionDetail.name.rawValue.uppercased(), valueName: SectionDetail.name.rawValue , valueData: foundPokemon?.name ?? "NA")))
+                let value = weAreOnline ? foundPokemon?.name ?? "NA" : localPokemon?.name ?? "NA"
+                rows.append((DetailCellRowObject(delegate: self, identity: SectionDetail.name.rawValue.uppercased(), valueName: SectionDetail.name.rawValue , valueData: value )))
             case .naturalGift:
-                rows.append((DetailCellRowObject(delegate: self, identity: SectionDetail.naturalGift.rawValue, valueName: SectionDetail.naturalGift.rawValue.uppercased() , valueData: foundPokemon?.types?.first?.type?.name ?? "NA")))
+                let value = weAreOnline ? foundPokemon?.types?.first?.type?.name ?? "NA" : localPokemon?.types.first?.type?.name ?? "NA"
+                rows.append((DetailCellRowObject(delegate: self, identity: SectionDetail.naturalGift.rawValue, valueName: SectionDetail.naturalGift.rawValue.uppercased() , valueData: value)))
             case .stats :
-                guard let stats = foundPokemon?.stats else {return}
-                for singleStat in stats {
-                    let baseStat  = singleStat.baseStat?.description ?? "NA"
-                    let effort  = singleStat.effort?.description ?? "NA"
-                    let stat  = singleStat.stat?.name ?? "NA"
 
-                    rows.append((DetailCellRowObject(delegate: self,
-                                                     identity: SectionDetail.stats.rawValue,
-                                                     valueName: "",
-                                                     valueData: " \(stat.uppercased()): base: \(baseStat) effort: \(effort) "
-                    )))
+                if weAreOnline {
+                    guard let stats = foundPokemon?.stats else {return}
+                    for singleStat in stats {
+                        let baseStat  = singleStat.baseStat?.description ?? "NA"
+                        let effort  = singleStat.effort?.description ?? "NA"
+                        let stat  = singleStat.stat?.name ?? "NA"
+
+                        rows.append((DetailCellRowObject(delegate: self,
+                                                         identity: SectionDetail.stats.rawValue,
+                                                         valueName: "",
+                                                         valueData: " \(stat.uppercased()): base: \(baseStat) effort: \(effort) "
+                        )))
+                    }
+                    
+                } else {
+                    guard let stats = localPokemon?.stats else {return}
+                    for singleStat in stats {
+                        let baseStat  = singleStat.baseStat.description
+                        let effort  = singleStat.effort.description
+                        let stat  = singleStat.stat?.name ?? "NA"
+
+                        rows.append((DetailCellRowObject(delegate: self,
+                                                         identity: SectionDetail.stats.rawValue,
+                                                         valueName: "",
+                                                         valueData: " \(stat.uppercased()): base: \(baseStat) effort: \(effort) "
+                        )))
+                    }
+                    
                 }
+                
                 
                
                 

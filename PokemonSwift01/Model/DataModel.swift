@@ -645,3 +645,49 @@ class JSONAny: Codable {
         }
     }
 }
+
+
+
+//MARK: REALM
+
+class PokemonResultLocal: Object {
+    
+     @objc dynamic var name: String = ""
+     @objc dynamic var url: String = ""
+
+}
+
+
+
+
+class PokemonLocal: Object {
+    
+    @objc dynamic var id = 0
+    @objc dynamic var name: String? = nil
+    let stats = List<StatLocal>()
+    let types = List<TypeElementLocal>()
+   
+}
+
+
+// MARK: - Stat
+class StatLocal: Object {
+    @objc dynamic var baseStat = 0
+    @objc dynamic var effort = 0
+    @objc dynamic var stat: SpeciesLocal?
+}
+
+
+// MARK: - TypeElement
+class TypeElementLocal: Object {
+    @objc dynamic var slot = 0
+    @objc dynamic var type: SpeciesLocal?
+
+}
+
+
+// MARK: - Species
+class SpeciesLocal: Object {
+    @objc dynamic var name: String? = nil
+    @objc dynamic var url: String? = nil
+}
