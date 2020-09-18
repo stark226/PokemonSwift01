@@ -17,7 +17,7 @@ enum SectionDetail: String, CaseIterable {
 import UIKit
 
 class DetailViewController: UIViewController {
-
+    
     @IBOutlet weak var detailVCTable: UITableView!
     
     var foundPokemon: Pokemon?
@@ -25,7 +25,7 @@ class DetailViewController: UIViewController {
     var weAreOnline = true
     
     var rows: [TableViewCellProtocol] = []
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +33,14 @@ class DetailViewController: UIViewController {
         detailVCTable.delegate = self
         detailVCTable.dataSource = self
         detailVCTable.allowsSelection = false
-
+        
         
         for section in SectionDetail.allCases {
             
             
             switch section {
             case .CustomHeaderCell:
-    //                self.rows.append(CustomHeaderForCellModelRowObject(delegate: self, identity: section.rawValue, headerTitle: "sono l'header"))
+                //                self.rows.append(CustomHeaderForCellModelRowObject(delegate: self, identity: section.rawValue, headerTitle: "sono l'header"))
                 break
             case .name :
                 let value = weAreOnline ? foundPokemon?.name ?? "NA" : localPokemon?.name ?? "NA"
@@ -49,14 +49,14 @@ class DetailViewController: UIViewController {
                 let value = weAreOnline ? foundPokemon?.types?.first?.type?.name ?? "NA" : localPokemon?.types.first?.type?.name ?? "NA"
                 rows.append((DetailCellRowObject(delegate: self, identity: SectionDetail.naturalGift.rawValue, valueName: SectionDetail.naturalGift.rawValue.uppercased() , valueData: value)))
             case .stats :
-
+                
                 if weAreOnline {
                     guard let stats = foundPokemon?.stats else {return}
                     for singleStat in stats {
                         let baseStat  = singleStat.baseStat?.description ?? "NA"
                         let effort  = singleStat.effort?.description ?? "NA"
                         let stat  = singleStat.stat?.name ?? "NA"
-
+                        
                         rows.append((DetailCellRowObject(delegate: self,
                                                          identity: SectionDetail.stats.rawValue,
                                                          valueName: "",
@@ -70,7 +70,7 @@ class DetailViewController: UIViewController {
                         let baseStat  = singleStat.baseStat.description
                         let effort  = singleStat.effort.description
                         let stat  = singleStat.stat?.name ?? "NA"
-
+                        
                         rows.append((DetailCellRowObject(delegate: self,
                                                          identity: SectionDetail.stats.rawValue,
                                                          valueName: "",
@@ -81,7 +81,7 @@ class DetailViewController: UIViewController {
                 }
                 
                 
-               
+                
                 
             }
             
@@ -91,8 +91,8 @@ class DetailViewController: UIViewController {
         
         
     }
-
-
+    
+    
     
     
     
@@ -125,7 +125,7 @@ extension DetailViewController: UITableViewDataSource {
         
         return cell
     }
-
+    
 }
 
 

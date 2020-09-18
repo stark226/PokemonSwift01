@@ -11,18 +11,18 @@ import UIKit
 extension UIViewController {
     
     static let loadingContainerTag = 66
-
+    
     func showLoadingView(uponView: UIView) {
-
+        
         let containerForLoading = UIView(frame: uponView.bounds)
         uponView.addSubview(containerForLoading)
         containerForLoading.backgroundColor = .white
         containerForLoading.alpha = 0
         
-
+        
         containerForLoading.tag = UIViewController.loadingContainerTag
         
-
+        
         UIView.animate(withDuration: 0.24) { containerForLoading.alpha = 0.8 }
         let activivityIndicator = UIActivityIndicatorView()
         containerForLoading.addSubview(activivityIndicator)

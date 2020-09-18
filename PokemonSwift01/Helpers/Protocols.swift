@@ -23,5 +23,5 @@ protocol TableViewCellProtocol {
 //MARK: protocols for cells
 
 protocol DetailCellDelegate: class {
-//    func didTapButtonInCell(withName: String)
+    //    func didTapButtonInCell(withName: String)
 }
