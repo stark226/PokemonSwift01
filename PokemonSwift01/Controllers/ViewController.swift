@@ -6,12 +6,6 @@
 //  Copyright © 2020 Stefano Cardia. All rights reserved.
 //
 
-///used to comunicate events between custom cells with an identity. the class used to send the "content" to the cells needs to conform to it, and to have the delegate property. di fatto viene usato come tipo nell'array chiamato rows, che contiene gli oggetti da mostrare nelle varie celle.
-protocol TableViewCellProtocol {
-    var identity: String { get set }
-    var cellClass: UITableViewCell.Type { get set }
-    func config(cell: UITableViewCell)
-}
 
 
 enum SectionsForTable: String, CaseIterable {
@@ -28,10 +22,10 @@ import RealmSwift
 class ViewController: UIViewController {
     
     @IBOutlet weak var pokemonListTableView: UITableView!
-    
     @IBOutlet weak var onlineStatusButtonOut: UIBarButtonItem!
     
-    let endPoint = "https://pokeapi.co/api/v2/pokemon/"
+    
+//    let endPoint = "https://pokeapi.co/api/v2/pokemon/"
     let pokemonDetailSegue = "pokemonDetailSegue"
     
     var containerForLoading = UIView()
@@ -61,7 +55,7 @@ class ViewController: UIViewController {
         
         if weAreOnline {
             
-            fetchPokemons { (pokemons, message) in
+            NetworkManager.shared.fetchPokemons { (pokemons, message) in
                 
                 guard let pokemons = pokemons else {
                     return
@@ -132,7 +126,7 @@ class ViewController: UIViewController {
         
         //per ogni pokemon faccio la ricerca di tuti i dati contenuti e li metto in un array separato, che userò sia per inviare i dati al VC di dettaglio, che per il salvataggio offline
         
-        self.fetchPokemonsAbilities(singleUrl: singlePokemonUrl) { (singlePokemon, message) in
+        NetworkManager.shared.fetchPokemonsAbilities(singleUrl: singlePokemonUrl) { (singlePokemon, message) in
             
             guard let singlePokemon = singlePokemon else {
                 return
@@ -233,98 +227,6 @@ class ViewController: UIViewController {
 
 
 
-
-
-//MARK: EXTENSIONS
-
-extension ViewController {
-    
-    func fetchPokemons(completed: @escaping (GetMainResult?, String?) -> Void) {
-        
-        guard let url = URL(string: endPoint) else {
-            completed(nil, "error 0")
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            
-            if let _ = error {
-                completed(nil, "error 1")
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(nil, "error 2")
-                return
-            }
-            
-            guard let data = data else {
-                completed(nil, "error 3")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let allResults = try decoder.decode(GetMainResult.self, from: data)
-                completed(allResults, nil)
-            } catch {
-                completed(nil, "error 4")
-            }
-            
-        }
-        
-        
-        task.resume()
-        
-        
-    }
-    
-    
-    func fetchPokemonsAbilities(singleUrl: String, completed: @escaping (Pokemon?, String?) -> Void) {
-        
-        guard let url = URL(string: singleUrl) else {
-            completed(nil, "error 0")
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            
-            if let _ = error {
-                completed(nil, "error 1")
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(nil, "error 2")
-                return
-            }
-            
-            guard let data = data else {
-                completed(nil, "error 3")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let followers = try decoder.decode(Pokemon.self, from: data)
-                completed(followers, nil)
-            } catch {
-                completed(nil, "error 4")
-            }
-            
-        }
-        
-        
-        task.resume()
-        
-        
-    }
-    
-    
-    
-}
 
 
 //MARK: TABLEVIEW EXTENSIONS

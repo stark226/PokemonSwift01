@@ -6,11 +6,6 @@
 //  Copyright © 2020 Stefano Cardia. All rights reserved.
 //
 
-
-protocol DetailCellDelegate: class {
-//    func didTapButtonInCell(withName: String)
-}
-
 import UIKit
 
 class DetailCell: UITableViewCell {
