@@ -52,7 +52,6 @@ class ViewController: UIViewController {
 
         
         self.showLoadingView(uponView: self.view)
-        
         if weAreOnline {
             
             NetworkManager.shared.fetchPokemons { (pokemons, message) in
@@ -145,9 +144,8 @@ class ViewController: UIViewController {
     
     func fillLocalArrayOfresults(webQueryResult: PokemonResult) {
         
-        if !localPokemonResults.contains(where: {$0.name == webQueryResult.name ?? "N/A"}) {
+        if !localPokemonResults.contains(where: {$0.name == webQueryResult.name}) {
 
-        
         let localresult = PokemonResultLocal()
         localresult.name = webQueryResult.name
         localresult.url = webQueryResult.url
@@ -202,7 +200,7 @@ class ViewController: UIViewController {
             try! realm.write {
                 realm.add(localPokemon)
             }
-            print("creato \(localPokemon.name)")
+            print("creato \(localPokemon.name ?? "N/A")")
             
         } else {
             print("presente tra tutti e \(localPokemonsCollection.count)")
@@ -286,38 +284,3 @@ extension ViewController: PokemonListCellDelegate {
     
 }
 
-
-
-extension ViewController {
-    
-    func showLoadingView(uponView: UIView) {
-        containerForLoading = UIView(frame: uponView.bounds)
-        uponView.addSubview(containerForLoading)
-        
-        containerForLoading.backgroundColor = .white
-        containerForLoading.alpha = 0
-        UIView.animate(withDuration: 0.24) { self.containerForLoading.alpha = 0.8 }
-        let activivityIndicator = UIActivityIndicatorView()
-        containerForLoading.addSubview(activivityIndicator)
-        
-        activivityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        NSLayoutConstraint.activate([
-            
-            activivityIndicator.centerYAnchor.constraint(equalTo: uponView.centerYAnchor),
-            activivityIndicator.centerXAnchor.constraint(equalTo: uponView.centerXAnchor)
-            
-        ])
-        
-        activivityIndicator.startAnimating()
-    }
-    
-    func removeLoading(uponView: UIView) {
-        
-        containerForLoading.removeFromSuperview()
-        
-    }
-    
-    
-}
