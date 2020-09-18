@@ -254,7 +254,7 @@ extension ViewController: UITableViewDataSource {
         
         let model = rows[indexPath.row]
         
-        let cell = self.pokemonListTableView.dequeueReusableCell(withIdentifier: model.cellClass.identifier_GivenByExtension, for: indexPath)
+        let cell = self.pokemonListTableView.dequeueReusableCell(withIdentifier: model.cellClass.identifier, for: indexPath)
         model.config(cell: cell)
         
         return cell
@@ -264,16 +264,6 @@ extension ViewController: UITableViewDataSource {
     
     
 }
-
-
-extension UIView {
-    //    static var identifier: String { //usa questa nel mondo reale
-    
-    static var identifier_GivenByExtension: String {
-        return String(describing: self)
-    }
-}
-
 
 
 extension ViewController: PokemonListCellDelegate {

@@ -120,7 +120,7 @@ extension DetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = rows[indexPath.row]
         
-        let cell = self.detailVCTable.dequeueReusableCell(withIdentifier: model.cellClass.identifier_GivenByExtension, for: indexPath)
+        let cell = self.detailVCTable.dequeueReusableCell(withIdentifier: model.cellClass.identifier, for: indexPath)
         model.config(cell: cell)
         
         return cell
